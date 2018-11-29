@@ -9,11 +9,15 @@ defmodule Alpaca.MixProject do
     deps:            deps(),
   ]
 
-  def application, do: [ extra_applications: [:logger] ]
+  def application, do: [
+    mod:                {Alpaca.Application, []},
+    extra_applications: [:logger]
+  ]
 
   defp deps, do: [
     {:ex_doc,       "~> 0.19.1"},
     {:propcheck,    "~> 1.1"},    # https://hexdocs.pm/propcheck/PropCheck.html#content
     {:typed_struct, "~> 0.1.4"},  # https://hexdocs.pm/typed_struct/TypedStruct.html
+    {:websockex,    "~> 0.4.1"},  # https://hexdocs.pm/websockex/readme.html
   ]
 end

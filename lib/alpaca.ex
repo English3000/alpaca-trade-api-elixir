@@ -14,7 +14,7 @@ defmodule Alpaca do
   @url         "https://api.alpaca.markets"
   @polygon_url "https://api.polygon.io/v1"
 
-  @typedoc ""
+  @typedoc "TODO"
   typedstruct do
     field :key,         String.t, enforce: true
     field :secret_key,  String.t, enforce: true
@@ -23,17 +23,27 @@ defmodule Alpaca do
   end
 
   @spec new(options :: [{atom, String.t}]) :: Alpaca.t
-  def new(opts), do: %Alpaca{
+  def new(opts \\ []), do: %Alpaca{
     key:         fetch_key!(opts, :key),
     secret_key:  fetch_key!(opts, :secret_key),
     url:         get_url(opts, :url, @url),
     polygon_url: get_url(opts, :polygon_url, @polygon_url)
   }
 
+  @config_message """
+  \tPlease ensure you've added
+
+  \t  config :alpaca,
+  \t    key: <YOUR KEY ID>,
+  \t    secret_key: <YOUR SECRET KEY>
+
+  \tto `config.exs`
+  """
   def fetch_key!(opts, key), do: # TODO: Add test.
     if value = get_url(opts, key),
       do:   value,
-      else: raise ArgumentError, "#{key}: `#{Keyword.get(opts, key, "nil")}` is not a string"
+      else: raise ArgumentError,
+                  "#{key}: `#{Keyword.get(opts, key, "nil")}` is not a string\n" <> @config_message
 
   defp get_url(opts, key, url \\ nil) do
     with value <- Keyword.get(opts, key),
